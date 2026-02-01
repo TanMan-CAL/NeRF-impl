@@ -17,7 +17,20 @@ class SPE(torch.nn.Module):
 
 
 class NeuralField(torch.nn.Module):
-    def __init__(self):
-    
-    def forward(self):
-        return 
+    def __init__(self, spe_dim, width=256, depth=4):
+        super().__init__()
+        layers = []
+        input_dim = spe_dim
+        
+        for __ in range(depth):
+            layers.append(torch.nn.Linear(input_dim, width))
+            layers.append(torch.nn.ReLU())
+            input_dim = width
+        
+        layers.append(torch.nn.Linear(width, 3)) # r g b
+        layers.append(torch.nn.Sigmoid())
+
+        self.model = torch.nn.Sequential(*layers)
+
+    def forward(self, x):
+        return self.model(x)
