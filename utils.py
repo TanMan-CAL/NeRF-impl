@@ -1,5 +1,5 @@
 import math
-
+import torch
 # Constants
 INFINITY = float('inf')
 PI = 3.1415926535897932385
@@ -21,3 +21,6 @@ def linear_to_gamma(linear_component):
     if linear_component > 0:
         return math.sqrt(linear_component)
     return 0
+
+def PSNR(MSE):
+    return -10.0 * torch.log10(MSE) 
