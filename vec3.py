@@ -96,7 +96,4 @@ class Vec3:
             return in_unit_sphere
         else:
             return -in_unit_sphere
-
-# Type aliases for clarity
-Point3 = Vec3  # 3D point
 Color = Vec3   # RGB color
