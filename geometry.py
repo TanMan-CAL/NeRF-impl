@@ -1,8 +1,6 @@
 class Geometry:
     def transform(camera2world, points):
-        # transform formula:
-        # :world pos = R * camera pos + t
-
+        # transform formula: world pos = R * camera pos + t
         ones = np.ones((*points.shape[:-1], 1))
         points_1s = np.concatenate([points, ones], axis=-1)
 
