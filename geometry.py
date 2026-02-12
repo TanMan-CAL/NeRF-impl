@@ -1,3 +1,7 @@
+# geometry.py
+
+import numpy as np
+
 class Geometry:
     def transform(camera2world, points):
         # transform formula: world pos = R * camera pos + t
@@ -18,14 +22,14 @@ class Geometry:
         return np.stack([x, y, z], axis=-1)
     
     def pixel_to_ray(K, camera2world, uv):
-        ray_origin = c2w[:3, 3]
+        ray_origin = camera2world[:3, 3]
 
-        point = pixel_to_camera(K, uv, depth=1.0)
+        point = Geometry.pixel_to_camera(K, uv, depth=1.0)
 
-        x = transform(camera2world, point)
+        x = Geometry.transform(camera2world, point)
 
         ray_direction = x - ray_origin
 
         ray_direction = ray_direction / np.linalg.norm(ray_direction, axis=-1, keepdims=True)
 
-        return ray_o, ray_d
+        return ray_origin, ray_direction
