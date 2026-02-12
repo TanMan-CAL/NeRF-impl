@@ -1,5 +1,4 @@
 # geometry.py
-
 import numpy as np
 
 class Geometry:
