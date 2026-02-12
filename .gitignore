@@ -1,5 +1,5 @@
 env
-img
+imgs
 __pycache__
 photo_calibration/calib_images
 photo_calibration/object_images
