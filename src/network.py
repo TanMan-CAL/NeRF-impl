@@ -14,7 +14,7 @@ class SPE(torch.nn.Module):
             encoded.append(torch.sin((2 ** i) * torch.pi * x))
             encoded.append(torch.cos((2 ** i) * torch.pi * x))
         
-        return torch.cat(encoded, dimension=-1)
+        return torch.cat(encoded, dim=-1)
 
 
 class NeRF(nn.Module):
@@ -49,7 +49,7 @@ class NeRF(nn.Module):
 
         sigma = torch.relu(self.sigma_layer(h))
 
-        h = torch.cat([h, d], dimension=-1)
+        h = torch.cat([h, d], dim=-1)
         rgb = self.color_layer(h)
 
         return rgb, sigma
