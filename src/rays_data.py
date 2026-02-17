@@ -31,9 +31,9 @@ class RaysData:
         rays_origin, rays_direction = [], []
 
         for u, cam_id in zip(uv, camera_ids):
-            origin, distance = Geometry.pixel_to_ray(self.K, self.camera2world[cam_id], u)
+            origin, direction = Geometry.pixel_to_ray(self.K, self.camera2world[cam_id], u)
             rays_origin.append(origin)
-            rays_direction.append(distance)
+            rays_direction.append(direction)
 
         return (np.stack(rays_origin), np.stack(rays_direction), rgb)
 

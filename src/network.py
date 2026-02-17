@@ -40,9 +40,8 @@ class NeRF(nn.Module):
         )
     
     def forward(self, x, d):
-        x = self.pos_enc(x)
-        d = self.dir_enc(d)
-
+        x = self.pos_encoder(x)
+        d = self.dir_encoder(d)
         h = torch.relu(self.fc1(x))
         h = torch.relu(self.fc2(h))
         h = torch.relu(self.fc3(h))
