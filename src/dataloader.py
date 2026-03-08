@@ -40,5 +40,5 @@ class Dataset(torch.utils.data.Dataset):
         return self.coordinates[idx], self.colors[idx]
 
     def sample_batch(self, batch_size):
-        idx = torch.randint(0, len(self), (batch_size))
+        idx = torch.randint(0, len(self), (batch_size,))
         return self.coordinates[idx], self.colors[idx]
