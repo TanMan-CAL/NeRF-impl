@@ -20,8 +20,7 @@ class SPE(torch.nn.Module):
 class NeRF(nn.Module):
     def __init__(self, pos_L=10, dir_L=4, width=256):
         super().__init__()
-
-        self.pos_encoder= SPE(pos_L)
+        self.pos_encoder = SPE(pos_L)
         self.dir_encoder = SPE(dir_L)
         pos_dimension = 3 * (2 * pos_L + 1)
         dir_dimension = 3 * (2 * dir_L + 1)

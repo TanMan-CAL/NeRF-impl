@@ -2,8 +2,8 @@
 import numpy as np
 
 class Geometry:
+    @staticmethod
     def transform(camera2world, points):
-        # transform formula: world pos = R * camera pos + t
         ones = np.ones((*points.shape[:-1], 1))
         points_1s = np.concatenate([points, ones], axis=-1)
 
@@ -11,6 +11,7 @@ class Geometry:
 
         return points_rotat_trans[..., :3]
 
+    @staticmethod
     def pixel_to_camera(K, uv, depth=1):
         fx, fy, cx, cy = K[0,0], K[1,1], K[0,2], K[1,2]
 
@@ -20,6 +21,7 @@ class Geometry:
 
         return np.stack([x, y, z], axis=-1)
     
+    @staticmethod
     def pixel_to_ray(K, camera2world, uv):
         ray_origin = camera2world[:3, 3]
 

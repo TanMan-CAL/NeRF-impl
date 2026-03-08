@@ -29,15 +29,9 @@ def calibrate_camera(calib_images_path, tag_size=0.02):
             for c in corners:
                 all_imgpoints.append(c.reshape(-1, 2))
                 all_objpoints.append(object_points_1tag)
-        else:
-            pass
-            # print(f"Skiping {fname}")
 
     ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
         all_objpoints, all_imgpoints, image_size, None, None
     )
-
-    # print("Camera matrix:\n", camera_matrix)
-    # print("Distortion coefficient:\n", dist_coeffs)
 
     return camera_matrix, dist_coeffs

@@ -13,4 +13,14 @@ c2w_matrices = estimate_camera_poses(object_path, camera_matrix, dist_coeffs, ta
 
 undistorted_images = undistort_images(object_path, camera_matrix, dist_coeffs)
 
-save_dataset("my_nerf_data.npz", undistorted_images, c2w_matrices, camera_matrix[0,0])
+n = len(undistorted_images)
+n_train = int(n * 0.8)
+
+save_dataset(
+    "my_nerf_data.npz",
+    images     = undistorted_images[:n_train],
+    c2ws       = c2w_matrices[:n_train],
+    focal      = camera_matrix[0, 0],
+    images_val = undistorted_images[n_train:],
+    c2ws_val   = c2w_matrices[n_train:],
+)
