@@ -7,6 +7,7 @@ class RaysData:
         self.images = images
         self.K = K
         self.camera2world = camera2world
+        
         N, H, W, _ = images.shape
 
         yy, xx = np.meshgrid(
