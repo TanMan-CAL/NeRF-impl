@@ -17,7 +17,7 @@ class RaysData:
         )
 
         uv = np.stack([xx, yy], axis=-1).reshape(-1, 2)
-        uv = uv + 0.5  # pixel center offset; NEED TO DOUBLE CHECK THIS (ASK ZAC)
+        uv = uv + 0.5  #pixel center offset; NEED TO DOUBLE CHECK THIS (ASK ZAC)
 
         self.uvs = uv
         self.pixels = images.reshape(-1, 3)
