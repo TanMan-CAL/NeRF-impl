@@ -1,4 +1,4 @@
-# src/dataloader.py
+#src/dataloader.py
 import torch
 
 class RaysDataLoader:
@@ -9,9 +9,8 @@ class RaysDataLoader:
         rays_origin, rays_direction, pixels = self.rays_data.sample_rays(n_rays)
         return rays_origin, rays_direction, pixels
 
-    def sample_along_rays(self, rays_origin, rays_direction, near, far, n_samples, perturbation=False):
-        points = self.rays_data.sample_along_rays(rays_origin, rays_direction, near, far, n_samples, perturbation=perturbation)
-        return points
+    def sample_along_rays(self, rays_origin, rays_direction, near, far, n_samples, perturbation=False, return_directions=False, return_t=False):
+        return self.rays_data.sample_along_rays(rays_origin, rays_direction, near, far, n_samples, perturbation=perturbation, return_directions=return_directions, return_t=return_t)
 
 
 class Dataset(torch.utils.data.Dataset):
@@ -21,18 +20,13 @@ class Dataset(torch.utils.data.Dataset):
 
         yy, xx = torch.meshgrid(torch.arange(self.H), torch.arange(self.W), indexing="ij")
         coordinates = torch.stack([xx, yy], dim=-1).float()
-        # print(coordinates.size())
 
-        # normalize data
-        for i in range(coordinates.shape[0]):
-            for j in range(coordinates.shape[1]):
-                coordinates[i, j, 0] = coordinates[i, j, 0] / self.W
-                coordinates[i, j, 1] = coordinates[i, j, 1] / self.H
+        coordinates[..., 0] = coordinates[..., 0] / self.W
+        coordinates[..., 1] = coordinates[..., 1] / self.H
 
         self.coordinates = coordinates.view(-1, 2)
         self.colors = self.image.view(-1, 3)
 
-    
     def __len__(self):
         return self.coordinates.shape[0]
 
