@@ -58,5 +58,7 @@ class RaysData:
 
         if len(outputs) == 1:
             return outputs[0]
-
+        
+        # sample rays for NeRF
+        # x(t) = o + td
         return tuple(outputs)
