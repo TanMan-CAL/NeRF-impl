@@ -1,6 +1,8 @@
 ### NeRFs
 
-originally restructured from my ray tracing work; books I've read: Ray Tracing in One Weekend, Ray Tracing: The Next Week, Ray Tracing: The Rest of Your Life (currently reading)
+Originally restructured from my computer vision, 3D reconstruction, and ray tracing work; books I've read: Ray Tracing in One Weekend, Ray Tracing: The Next Week, Ray Tracing: The Rest of Your Life (currently reading).
+
+
 
 
 <img src="results/val_gt_00.png" width="150" /> <img src="results/val_pred_00.png" width="150" />
