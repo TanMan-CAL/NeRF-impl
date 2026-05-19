@@ -5,11 +5,8 @@
 What is a NeRF? 
 
 
-#### How I did it?
 
-
-#### Camera Poses with ArUco Markers
-
+### Camera Poses with ArUco Markers
 Before training the NeRF, each image needs a camera pose: where the camera was in 3D space, and which direction it was looking when the photo was taken. Instead of manually calibrating a camera, I used used an ArUco marker as a fixed reference point in the scene.
 
 The ArUco marker acts as the world space origin. Since the physical size of the marker is known, we can define its four corners as 3D points on a flat plane. Math doesn't pertain to the functionality of a NeRF, and rather I used OpenCV to the 2D pixel locations of the marker corners using `solvePnP`. This gives the rotation and translation of the marker relative to the camera.
@@ -22,9 +19,7 @@ The NeRF then samples many 3D points along each ray. Each sampled point, along w
 
 <img width="2096" height="224" alt="image" src="https://github.com/user-attachments/assets/d01d4566-a53d-4f92-a096-8e290e6a1aab" />
 
-This is what allows a set of ordinary handheld photos to become a consistent 3D reconstruction problem: the ArUco marker gives all images a shared coordinate frame, and NeRF learns the continuous radiance field inside that frame.
-
-
+This is what allows predictions from the MLP to become a 3D reconstruction problem.
 
 
 ### Hierachical Sampling
@@ -44,15 +39,40 @@ Finally, the fine network is trained using the samples from regions with larger 
 
 If you want to read more about this, I based my code in `src/volume_rendering.py` off the [Scratchapixel Volume Rendering Documentation](https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/volume-rendering-summary-equations.html).
 
-This is ultimately what my training yielded. Trained for over 20,000+ iterations and 
 
-<img src="results/val_gt_00.png" width="150" /> <img src="results/val_pred_00.png" width="150" />
+### Results
+The final model was trained for **20,000+ iterations** using **44 calibrated images**, each with a reprojection error below **10 px**. Each training image was downsampled to **1512 × 2016** resolution.
 
-<img src="results/val_gt_01.png" width="150" /> <img src="results/val_pred_01.png" width="150" />
+The training pipeline was first run on a single NVIDIA T4 GPU (using Colab), then optimized across **2× NVIDIA T4 GPUs** (using Runpod) to improve training throughput. The images below are with the single GPU training. The left image is the ground truth, and the right image is the model prediction.
 
-<img src="results/val_gt_02.png" width="150" /> <img src="results/val_pred_02.png" width="150" />
+<table>
+  <tr>
+    <th>Ground Truth</th>
+    <th>NeRF Render</th>
+  </tr>
+  <tr>
+    <td><img src="results/val_gt_00.png" width="240" /></td>
+    <td><img src="results/val_pred_00.png" width="240" /></td>
+  </tr>
+  <tr>
+    <td><img src="results/val_gt_01.png" width="240" /></td>
+    <td><img src="results/val_pred_01.png" width="240" /></td>
+  </tr>
+  <tr>
+    <td><img src="results/val_gt_02.png" width="240" /></td>
+    <td><img src="results/val_pred_02.png" width="240" /></td>
+  </tr>
+  <tr>
+    <td><img src="results/val_gt_04.png" width="240" /></td>
+    <td><img src="results/val_pred_04.png" width="240" /></td>
+  </tr>
+</table>
 
-<img src="results/val_gt_04.png" width="150" /> <img src="results/val_pred_04.png" width="150" />
+
+**Final 360 render (PSNR of 20):**
+
+<img src="results/watermelon_360.gif" width="500" /> 
 
 
-<img src="results/watermelon_360.gif" width="300" /> 
+### Reflections
+Data quality matters more than anything. Reprojection errors or incorrect measurements of the Aruco tags result in massive errors that lead to a PSNR that platues around 10. I really recommend running some data filtering step before training the NeRF to rule out bad images, helps a ton!
