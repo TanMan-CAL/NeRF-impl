@@ -2,7 +2,7 @@
 
 A [NeRF](https://www.matthewtancik.com/nerf) is a way to reconstruct a 3D scene from a set of 2D images. Instead of storing the scene as a mesh or point cloud, a NeRF learns a continuous function that maps **position in 3D space + rotation aligned to origin yields colour + density @ point in 3D space.**
 
-This function is represented by a small neural network. For every camera ray, the model samples points through the scene, predicts the color and density at each point, and then uses volume rendering to combine those predictions into a final pixel color. By optimizing the rendered pixels to match the original training images, the network gradually learns the geometry and appearance of the scene.
+This function is represented by a small neural network. For every camera ray, the model samples points through the scene, predicts the color and density at each point, and then uses volume rendering to combine those predictions into a final pixel color.
 
 <img width="1048" src="https://github.com/user-attachments/assets/db55296d-1357-4a56-bedb-617df646e2f2" />
 
