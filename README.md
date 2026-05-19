@@ -6,10 +6,8 @@ This function is represented by a small neural network. For every camera ray, th
 
 <img width="1048" src="https://github.com/user-attachments/assets/db55296d-1357-4a56-bedb-617df646e2f2" />
 
-
 The key idea is that once the model has learned this continuous 3D representation, we can render the object or scene from new viewpoints that were never directly seen during training. 
 <img width="1000" src="https://github.com/user-attachments/assets/9b8b51f4-2b90-474a-817d-efc20473485b" />
-
 
 ### Camera Poses with ArUco Markers
 Before training the NeRF, each image needs a camera pose: where the camera was in 3D space, and which direction it was looking when the photo was taken. Instead of manually calibrating a camera, I used used an ArUco marker as a fixed reference point in the scene.
@@ -23,13 +21,11 @@ Once the camera pose is known, the NeRF pipeline can generate rays. For each pix
 
 <img width="400" src="https://github.com/user-attachments/assets/7e908f89-af39-460f-99c4-af01c5ae1b75" />
 
-
 The NeRF then samples many 3D points along each ray. Each sampled point, along with the viewing direction, is passed into the MLP. The network predicts color and density at those locations, and using volume rendering we combine those predictions into the final pixel color.
 
 <img width="1000" src="https://github.com/user-attachments/assets/d01d4566-a53d-4f92-a096-8e290e6a1aab" />
 
 This is what allows predictions from the MLP to become a 3D reconstruction problem.
-
 
 ### Hierachical Sampling
 Rendering a pixel requires estimating an integral along a camera ray, which is done by sampling points along that ray. Because of this, the quality of the rendering depends heavily on where those samples are placed.
@@ -40,8 +36,7 @@ A naive approach would be to sample points at fixed intervals along the ray. Whi
 
 Before the NeRF paper was introduced, NeRF used stratified sampling. The ray interval is divided into N boxes, and one random point is sampled uniformly inside each bin. Since the sampled positions vary every iteration, the network learns a more continuous representation of the scene and doesn't overfit.
 
-<img width="1000" src="https://github.com/user-attachments/assets/5f0383c4-78ba-404e-9732-0b42a828e5f9" />
-
+<img width="700" src="https://github.com/user-attachments/assets/5f0383c4-78ba-404e-9732-0b42a828e5f9" />
 
 But even stratified sampling is not enough. It is very much possible that not enough samples are placed near important surfaces. That's why in the paper, **hierarchical sampling** is introdiced and uses two networks: a coarse network and a fine network.
 
@@ -49,11 +44,9 @@ Samples are generated using stratified sampling and passed through the coarse ne
 
 Finally, the fine network is trained using the samples from regions with larger weights. This concentrates computation around likely surface locations. Think of it intuitively, a point with low density contributes very little, and a point hidden behind opaque regions also has little effect even if its density is high.
 
-
-<img width="728" src="https://github.com/user-attachments/assets/8cba5fd4-c664-4d61-870a-711cfd5721b1" />
+<img width="700" src="https://github.com/user-attachments/assets/8cba5fd4-c664-4d61-870a-711cfd5721b1" />
 
 If you want to read more about this, I based my code in `src/volume_rendering.py` off the [Scratchapixel Volume Rendering Documentation](https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/volume-rendering-summary-equations.html).
-
 
 ### Results
 The final model was trained for **20,000+ iterations** using **44 calibrated images**, each with a reprojection error below **10 px**. Each training image was downsampled to **1512 × 2016** resolution.
@@ -86,7 +79,7 @@ The training pipeline was first run on a single NVIDIA T4 GPU (using Colab), the
 
 **Final 360 render (PSNR of 20):**
 
-<img src="results/watermelon_360.gif" width="500" /> 
+<img src="results/watermelon_360.gif" width="600" /> 
 
 
 ### Reflections
