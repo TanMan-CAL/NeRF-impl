@@ -45,7 +45,7 @@ Samples are generated using stratified sampling and passed through the coarse ne
 
 Finally, the fine network is trained using the samples from regions with larger weights. This concentrates computation around likely surface locations. Think of it intuitively, a point with low density contributes very little, and a point hidden behind opaque regions also has little effect even if its density is high.
 
-<img width="700" src="https://github.com/user-attachments/assets/8cba5fd4-c664-4d61-870a-711cfd5721b1" />
+<img width="700" src="https://github.com/user-attachments/assets/da60f35b-c4ae-4a94-a353-6609f868633c" />
 
 If you want to read more about this, I based my code in `src/volume_rendering.py` off the [Scratchapixel Volume Rendering Documentation](https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/volume-rendering-summary-equations.html).
 
