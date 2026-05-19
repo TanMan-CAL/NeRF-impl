@@ -1,6 +1,6 @@
 ### Neural Radiance Field (NeRFs)
 
-A NeRF is a way to reconstruct a 3D scene from a set of 2D images. Instead of storing the scene as a mesh or point cloud, a NeRF learns a continuous function that maps **position in 3D space + rotation aligned to origin yields colour + density @ point in 3D space.**
+A [NeRF](https://www.matthewtancik.com/nerf) is a way to reconstruct a 3D scene from a set of 2D images. Instead of storing the scene as a mesh or point cloud, a NeRF learns a continuous function that maps **position in 3D space + rotation aligned to origin yields colour + density @ point in 3D space.**
 
 This function is represented by a small neural network. For every camera ray, the model samples points through the scene, predicts the color and density at each point, and then uses volume rendering to combine those predictions into a final pixel color. By optimizing the rendered pixels to match the original training images, the network gradually learns the geometry and appearance of the scene.
 
@@ -88,3 +88,5 @@ Data quality matters more than anything. Reprojection errors or incorrect measur
 
 Even with more training the model plateaus and gets incrementally better! This alludes something is wrong with the model setup itself or the image data.
 <img width="800" src="https://github.com/user-attachments/assets/033355e4-5e20-44ea-9019-c8fd185cac4d" />
+
+Next step is to add text editing into the NeRF: https://arxiv.org/pdf/2303.12789.
