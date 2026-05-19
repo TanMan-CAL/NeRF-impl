@@ -11,6 +11,7 @@ The key idea is that once the model has learned this continuous 3D representatio
 
 ### Camera Poses with ArUco Markers
 Before training the NeRF, each image needs a camera pose: where the camera was in 3D space, and which direction it was looking when the photo was taken. Instead of manually calibrating a camera, I used used an ArUco marker as a fixed reference point in the scene.
+
 <img width="200"  src="https://github.com/user-attachments/assets/dfa5ac42-1654-4257-91d7-6f78a207ed56" /> <img width="200" src="https://github.com/user-attachments/assets/bb31d0f8-57e0-4a22-bd51-24dca55752d7" /> <img width="200" src="https://github.com/user-attachments/assets/daf20480-6206-4a6f-aa6f-c93b8bac0403" />
 
 The ArUco marker acts as the world space origin. Since the physical size of the marker is known, we can define its four corners as 3D points on a flat plane. Math doesn't pertain to the functionality of a NeRF, and rather I used OpenCV to the 2D pixel locations of the marker corners using `solvePnP`. This gives the rotation and translation of the marker relative to the camera.
