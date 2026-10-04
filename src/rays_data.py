@@ -1,5 +1,6 @@
 #src/rays_data.py
 import numpy as np
+import torch
 from geometry import Geometry
 
 
@@ -40,25 +41,30 @@ class RaysData:
         return (np.stack(rays_origin), np.stack(rays_direction), rgb)
 
     def sample_along_rays(self, rays_origin, rays_direction, near, far, n_samples, perturbation=False, return_directions=False, return_t=False):
-        random_samples = np.linspace(near, far, n_samples)
+        """Sample points along each ray: x(t) = o + t*d
+
+        Takes and returns torch tensors, and every intermediate is built on the
+        same device as `rays_origin`, so a training step never moves ray data
+        off the GPU. dtype follows the inputs rather than defaulting to float64.
+        """
+        device, dtype = rays_origin.device, rays_origin.dtype
+        t = torch.linspace(near, far, n_samples, device=device, dtype=dtype)
 
         if perturbation:
             interval_size = (far - near) / n_samples
-            random_samples = random_samples + (np.random.rand(*random_samples.shape) * interval_size)
+            t = t + torch.rand(n_samples, device=device, dtype=dtype) * interval_size
 
-        points = (rays_origin[:, None, :] + (rays_direction[:, None, :] * random_samples[None, :, None]))
+        points = rays_origin[:, None, :] + (rays_direction[:, None, :] * t[None, :, None])
 
         outputs = [points]
         if return_directions:
-            directions = np.broadcast_to(rays_direction[:, None, :], points.shape).copy()
-            outputs.append(directions)
+            # a view, not a copy; the later reshape materializes it if it has to
+            outputs.append(rays_direction[:, None, :].expand_as(points))
 
         if return_t:
-            outputs.append(random_samples)
+            outputs.append(t)
 
         if len(outputs) == 1:
             return outputs[0]
-        
-        # sample rays for NeRF
-        # x(t) = o + td
+
         return tuple(outputs)

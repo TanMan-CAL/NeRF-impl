@@ -49,19 +49,15 @@ def train(model, rays_data, near, far, n_iters, n_rays, n_samples, lr, lr_decay,
         ray_d = torch.from_numpy(ray_d).to(device)
         gt = torch.from_numpy(gt).to(device)
 
-        pts_np, dirs_np, _ = rays_data.sample_along_rays(
-            ray_o.detach().cpu().numpy(),
-            ray_d.detach().cpu().numpy(),
+        pts, dirs = rays_data.sample_along_rays(
+            ray_o,
+            ray_d,
             near,
             far,
             n_samples,
             perturbation=perturb,
             return_directions=True,
-            return_t=True,
         )
-
-        pts = torch.from_numpy(pts_np).to(device)
-        dirs = torch.from_numpy(dirs_np).to(device)
 
         B, S, _ = pts.shape
         pts_flat = pts.reshape(B * S, 3)
